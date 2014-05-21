@@ -1,43 +1,46 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
+
+use Joomla\Http\Http;
+use Joomla\Http\Response;
+use Joomla\Input\Input;
+use Joomla\Oauth1\Client;
+use Joomla\Registry\Registry;
 
 /**
- * Joomla Platform class for generating Openstreetmap API access token.
+ * Joomla Framework class for generating the OpenStreetMap API access token.
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapOauth extends JOAuth1Client
+class OAuth extends Client
 {
 	/**
-	 * Options for the JOpenstreetmapOauth object.
+	 * Options for the OAuth object.
 	 *
-	 * @var    JRegistry
-	 * @since  13.1
+	 * @var    Registry
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param   JRegistry  $options  JOpenstreetmapOauth options object.
-	 * @param   JHttp      $client   The HTTP client object.
-	 * @param   JInput     $input    The input object
+	 * @param   Registry  $options  OAuth options object.
+	 * @param   Http      $client   The HTTP client object.
+	 * @param   Input     $input    The input object
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
-	public function __construct(JRegistry $options = null, JHttp $client = null, JInput $input = null)
+	public function __construct(Registry $options = null, Http $client = null, Input $input = null)
 	{
-		$this->options = isset($options) ? $options : new JRegistry;
+		$this->options = isset($options) ? $options : new Registry;
 
 		$this->options->def('accessTokenURL', 'http://www.openstreetmap.org/oauth/access_token');
 		$this->options->def('authoriseURL', 'http://www.openstreetmap.org/oauth/authorize');
@@ -49,7 +52,7 @@ class JOpenstreetmapOauth extends JOAuth1Client
 		$this->options->def('requestTokenURL', 'http://api06.dev.openstreetmap.org/oauth/request_token');
 		*/
 
-		// Call the JOauth1Client constructor to setup the object.
+		// Call the OAuth1\Client constructor to setup the object.
 		parent::__construct($this->options, $client, $input, null, '1.0');
 	}
 
@@ -58,7 +61,7 @@ class JOpenstreetmapOauth extends JOAuth1Client
 	 *
 	 * @return  boolean  Returns true if the access token is valid and false otherwise.
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function verifyCredentials()
 	{
@@ -69,12 +72,12 @@ class JOpenstreetmapOauth extends JOAuth1Client
 	 * Method to validate a response.
 	 *
 	 * @param   string         $url       The request URL.
-	 * @param   JHttpResponse  $response  The response to validate.
+	 * @param   Response  $response  The response to validate.
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function validateResponse($url, $response)
 	{
@@ -82,7 +85,7 @@ class JOpenstreetmapOauth extends JOAuth1Client
 		{
 			$error = htmlspecialchars($response->body);
 
-			throw new DomainException($error, $response->code);
+			throw new \DomainException($error, $response->code);
 		}
 	}
 }

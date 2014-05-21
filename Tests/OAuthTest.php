@@ -1,48 +1,52 @@
 <?php
 /**
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
+ * Tests for the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\OpenStreetMap\Tests;
+
+use Joomla\Http\Http;
+use Joomla\Input\Input;
+use Joomla\OpenStreetMap\OAuth;
+use Joomla\Registry\Registry;
+
 /**
- * Test class for JOpenstreetmapOauth.
+ * Test class for Joomla\OpenStreetMap\OAuth.
  *
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapOauthTest extends TestCase
+class OAuthTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    JRegistry  Options for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
-	 * @var    JHttp  Mock http object.
-	 * @since  13.1
+	 * @var    Http  Mock HTTP object.
+	 * @since  1.0
 	 */
 	protected $client;
 
 	/**
-	 * @var    JInput The input object to use in retrieving GET/POST data.
-	 * @since  13.1
+	 * @var    Input The input object to use in retrieving GET/POST data.
+	 * @since  1.0
 	 */
 	protected $input;
 
 	/**
-	 * @var    JOpenstreetmapOauth  Authentication object for the Twitter object.
-	 * @since  13.1
+	 * @var    OAuth  Authentication object for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $oauth;
 
 	/**
 	 * @var    string  Sample string.
-	 * @since  13.1
+	 * @since  1.0
 	 */
 	protected $sampleString = 'Test String';
 
@@ -63,14 +67,14 @@ class JOpenstreetmapOauthTest extends TestCase
 		$secret = "app_secret";
 		$my_url = "http://127.0.0.1/eclipse/joomla-platform/osm_test.php";
 
-		$this->options = new JRegistry;
-		$this->input = new JInput;
-		$this->client = $this->getMock('JHttp', array('get', 'post', 'delete', 'put'));
+		$this->options = new Registry;
+		$this->input = new Input;
+		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
 
 		$this->options->set('consumer_key', $key);
 		$this->options->set('consumer_secret', $secret);
 		$this->options->set('callback', $my_url);
-		$this->oauth = new JOpenstreetmapOauth($this->options, $this->client, $this->input);
+		$this->oauth = new OAuth($this->options, $this->client, $this->input);
 		$this->oauth->setToken(array('key' => $key, 'secret' => $secret));
 	}
 
@@ -89,7 +93,7 @@ class JOpenstreetmapOauthTest extends TestCase
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedVerifyCredentials()
 	{
@@ -109,12 +113,12 @@ class JOpenstreetmapOauthTest extends TestCase
 	 * @return  void
 	 *
 	 * @dataProvider seedVerifyCredentials
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testVerifyCredentials($code, $body, $expected)
 	{
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = $code;
 		$returnData->body = $body;
 

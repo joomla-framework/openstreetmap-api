@@ -1,55 +1,59 @@
 <?php
 /**
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
+ * Tests for the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\OpenStreetMap\Tests;
+
+use Joomla\Http\Http;
+use Joomla\Input\Input;
+use Joomla\OpenStreetMap\Changesets;
+use Joomla\OpenStreetMap\OAuth;
+use Joomla\Registry\Registry;
+
 /**
- * Test class for JOpenstreetmapChangesets.
+ * Test class for Joomla\OpenStreetMap\Changesets.
  *
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
- *
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapChangesetsTest extends TestCase
+class ChangesetsTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    JRegistry  Options for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
-	 * @var    JHttp  Mock client object.
-	 * @since  13.1
+	 * @var    Http  Mock HTTP object.
+	 * @since  1.0
 	 */
 	protected $client;
 
 	/**
-	 * @var    JInput The input object to use in retrieving GET/POST data.
-	 * @since  13.1
+	 * @var    Input The input object to use in retrieving GET/POST data.
+	 * @since  1.0
 	 */
 	protected $input;
 
 	/**
-	 * @var    JOpenstreetmapChangesets Object under test.
-	 * @since  13.1
+	 * @var    Changesets Object under test.
+	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    JOpenstreetmapOauth  Authentication object for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    OAuth  Authentication object for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $oauth;
 
 	/**
 	 * @var    string  Sample XML.
-	 * @since  13.1
+	 * @since  1.0
 	 */
 	protected $sampleXml = <<<XML
 <?xml version='1.0'?>
@@ -58,7 +62,7 @@ XML;
 
 	/**
 	 * @var    string  Sample XML error message.
-	* @since  13.1
+	* @since  1.0
 	*/
 	protected $errorString = <<<XML
 <?xml version='1.0'?>
@@ -67,12 +71,12 @@ XML;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
-	* This method is called before a test is executed.
-	*
-	* @access protected
-	*
-	* @return void
-	*/
+	 * This method is called before a test is executed.
+	 *
+	 * @access protected
+	 *
+	 * @return void
+	 */
 	protected function setUp()
 	{
 		$_SERVER['HTTP_HOST'] = 'example.com';
@@ -85,13 +89,13 @@ XML;
 
 		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
 
-		$this->options = new JRegistry;
-		$this->input = new JInput;
-		$this->client = $this->getMock('JHttp', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new JOpenstreetmapOauth($this->options, $this->client, $this->input);
+		$this->options = new Registry;
+		$this->input = new Input;
+		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		$this->oauth = new OAuth($this->options, $this->client, $this->input);
 		$this->oauth->setToken($access_token);
 
-		$this->object = new JOpenstreetmapChangesets($this->options, $this->client, $this->oauth);
+		$this->object = new Changesets($this->options, $this->client, $this->oauth);
 
 		$this->options->set('consumer_key', $key);
 		$this->options->set('consumer_secret', $secret);
@@ -103,7 +107,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testCreateChangeset()
 	{
@@ -121,7 +125,7 @@ XML;
 				)
 		);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -144,7 +148,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @expectedException DomainException
 	 */
 	public function testCreateChangesetFailure()
@@ -163,7 +167,7 @@ XML;
 				)
 		);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -182,16 +186,16 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testReadChangeset()
 	{
 		$id = '14153708';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->changeset = new SimpleXMLElement($this->sampleXml);
+		$returnData->changeset = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id;
 
@@ -202,7 +206,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->readChangeset($id),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -211,17 +215,17 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testReadChangesetFailure()
 	{
 		$id = '14153708';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->changeset = new SimpleXMLElement($this->sampleXml);
+		$returnData->changeset = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id;
 
@@ -238,7 +242,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testUpdateChangeset()
 	{
@@ -249,7 +253,7 @@ XML;
 				"created_by" => "JOsm (en)"
 		);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -262,7 +266,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->updateChangeset($id, $tags),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -271,8 +275,8 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testUpdateChangesetFailure()
 	{
@@ -283,7 +287,7 @@ XML;
 				"created_by" => "JOsm (en)"
 		);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -302,13 +306,13 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testCloseChangeset()
 	{
 		$id = '14153708';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -327,14 +331,14 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testCloseChangesetFailure()
 	{
 		$id = '14153708';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -353,16 +357,16 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testDownloadChangeset()
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->create = new SimpleXMLElement($this->sampleXml);
+		$returnData->create = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id . '/download';
 
@@ -373,7 +377,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->downloadChangeset($id),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -382,17 +386,17 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testDownloadChangesetFailure()
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->create = new SimpleXMLElement($this->sampleXml);
+		$returnData->create = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id . '/download';
 
@@ -409,14 +413,14 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testExpandBBoxChangeset()
 	{
 		$id = '14153708';
 		$node_list = array(array(4,5),array(6,7));
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -429,7 +433,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->expandBBoxChangeset($id, $node_list),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -438,15 +442,15 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testExpandBBoxChangesetFailure()
 	{
 		$id = '14153708';
 		$node_list = array(array(4,5),array(6,7));
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -465,16 +469,16 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testQueryChangeset()
 	{
 		$param = 'open';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->osm = new SimpleXMLElement($this->sampleXml);
+		$returnData->osm = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changesets/' . $param;
 
@@ -485,7 +489,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->queryChangeset($param),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -494,17 +498,17 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testQueryChangesetFailure()
 	{
 		$param = 'open';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->osm = new SimpleXMLElement($this->sampleXml);
+		$returnData->osm = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changesets/' . $param;
 
@@ -521,7 +525,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testDiffUploadChangeset()
 	{
@@ -534,7 +538,7 @@ XML;
 				</modify>
 				</osmChange>';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -547,7 +551,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->diffUploadChangeset($xml, $id),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -556,8 +560,8 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testDiffUploadChangesetFailure()
 	{
@@ -570,7 +574,7 @@ XML;
 				</modify>
 				</osmChange>';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -583,5 +587,4 @@ XML;
 
 		$this->object->diffUploadChangeset($xml, $id);
 	}
-
 }

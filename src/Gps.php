@@ -1,22 +1,21 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
+
+use Joomla\Http\Response;
 
 /**
- * Openstreetmap API GPS class for the Joomla Platform
+ * OpenStreetMap API GPS class for the Joomla Framework
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapGps extends JOpenstreetmapObject
+class Gps extends OpenStreetMapObject
 {
 	/**
 	 * Method to retrieve GPS points
@@ -29,7 +28,7 @@ class JOpenstreetmapGps extends JOpenstreetmapObject
 	 *
 	 * @return	array  The XML response containing GPS points
 	 *
-	 * @since	13.1
+	 * @since	1.0
 	 */
 	public function retrieveGps($left, $bottom, $right, $top, $page = 0)
 	{
@@ -58,9 +57,9 @@ class JOpenstreetmapGps extends JOpenstreetmapObject
 	 * @param   string   $username     Username
 	 * @param   string   $password     Password
 	 *
-	 * @return  JHttpResponse  The response
+	 * @return  Response  The response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function uploadTrace($file, $description, $tags, $public, $visibility, $username, $password)
 	{
@@ -99,7 +98,7 @@ class JOpenstreetmapGps extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function downloadTraceMetadetails($id, $username, $password)
 	{
@@ -124,7 +123,7 @@ class JOpenstreetmapGps extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function downloadTraceMetadata($id, $username, $password)
 	{

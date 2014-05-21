@@ -1,55 +1,59 @@
 <?php
 /**
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
+ * Tests for the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\OpenStreetMap\Tests;
+
+use Joomla\Http\Http;
+use Joomla\Input\Input;
+use Joomla\OpenStreetMap\Gps;
+use Joomla\OpenStreetMap\OAuth;
+use Joomla\Registry\Registry;
+
 /**
- * Test class for JOpenstreetmapGps.
+ * Test class for Joomla\OpenStreetMap\Gps.
  *
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
- *
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapGpsTest extends TestCase
+class GpsTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    JRegistry  Options for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
-	 * @var    JHttp  Mock client object.
-	 * @since  13.1
+	 * @var    Http  Mock HTTP object.
+	 * @since  1.0
 	 */
 	protected $client;
 
 	/**
-	 * @var    JInput The input object to use in retrieving GET/POST data.
-	 * @since  13.1
+	 * @var    Input The input object to use in retrieving GET/POST data.
+	 * @since  1.0
 	 */
 	protected $input;
 
 	/**
-	 * @var    JOpenstreetmapGps Object under test.
-	 * @since  13.1
+	 * @var    Gps Object under test.
+	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    JOpenstreetmapOauth  Authentication object for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    OAuth  Authentication object for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $oauth;
 
 	/**
 	 * @var    string  Sample XML.
-	 * @since  13.1
+	 * @since  1.0
 	 */
 	protected $sampleXml = <<<XML
 <?xml version='1.0'?>
@@ -58,7 +62,7 @@ XML;
 
 	/**
 	 * @var    string  Sample XML error message.
-	* @since  13.1
+	* @since  1.0
 	*/
 	protected $errorString = <<<XML
 <?xml version='1.0'?>
@@ -85,13 +89,13 @@ XML;
 
 		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
 
-		$this->options = new JRegistry;
-		$this->input = new JInput;
-		$this->client = $this->getMock('JHttp', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new JOpenstreetmapOauth($this->options, $this->client, $this->input);
+		$this->options = new Registry;
+		$this->input = new Input;
+		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		$this->oauth = new OAuth($this->options, $this->client, $this->input);
 		$this->oauth->setToken($access_token);
 
-		$this->object = new JOpenstreetmapGps($this->options, $this->client, $this->oauth);
+		$this->object = new Gps($this->options, $this->client, $this->oauth);
 
 		$this->options->set('consumer_key', $key);
 		$this->options->set('consumer_secret', $secret);
@@ -103,7 +107,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testRetrieveGps()
 	{
@@ -113,7 +117,7 @@ XML;
 		$top = '2';
 		$page = '0';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -126,7 +130,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->retrieveGps($left, $bottom, $right, $top, $page),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -135,8 +139,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testRetrieveGpsFailure()
 	{
@@ -146,7 +150,7 @@ XML;
 		$top = '2';
 		$page = '0';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -165,7 +169,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testUploadTrace()
 	{
@@ -178,7 +182,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -191,7 +195,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->uploadTrace($file, $description, $tags, $public, $visibility, $username, $password),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -200,8 +204,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testUploadTraceFailure()
 	{
@@ -214,7 +218,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -233,7 +237,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testDownloadTraceMetadetails()
 	{
@@ -242,7 +246,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -255,7 +259,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->downloadTraceMetadetails($id, $username, $password),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -264,8 +268,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testDownloadTraceMetadetailsFailure()
 	{
@@ -274,7 +278,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -293,7 +297,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testDownloadTraceMetadata()
 	{
@@ -302,7 +306,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -315,7 +319,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->downloadTraceMetadata($id, $username, $password),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -324,8 +328,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testDownloadTraceMetadataFailure()
 	{
@@ -334,7 +338,7 @@ XML;
 		$username = 'username';
 		$password = 'password';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 

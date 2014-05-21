@@ -1,22 +1,19 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
 
 /**
- * Openstreetmap API Changesets class for the Joomla Platform
+ * OpenStreetMap API Changesets class for the Joomla Framework
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapChangesets extends JOpenstreetmapObject
+class Changesets extends OpenStreetMapObject
 {
 	/**
 	 * Method to create a changeset
@@ -25,7 +22,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function createChangeset($changesets=array())
 	{
@@ -44,7 +41,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 		$path = $this->getOption('api.url') . $base;
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-			<osm version="0.6" generator="JOpenstreetmap">';
+			<osm version="0.6" generator="JoomlaOpenStreetMap">';
 
 		if (!empty($changesets))
 		{
@@ -83,7 +80,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response about a changeset
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function readChangeset($id)
 	{
@@ -107,7 +104,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response of updated changeset
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function updateChangeset($id, $tags = array())
 	{
@@ -136,7 +133,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-				<osm version="0.6" generator="JOpenstreetmap">
+				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<changeset>'
 				. $tag_list .
 				'</changeset>
@@ -159,7 +156,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function closeChangeset($id)
 	{
@@ -189,7 +186,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response of requested changeset
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function downloadChangeset($id)
 	{
@@ -213,7 +210,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response of changed changeset
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function expandBBoxChangeset($id, $nodes)
 	{
@@ -242,7 +239,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-				<osm version="0.6" generator="JOpenstreetmap">
+				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<changeset>'
 				. $node_list .
 				'</changeset>
@@ -265,7 +262,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function queryChangeset($param)
 	{
@@ -289,7 +286,7 @@ class JOpenstreetmapChangesets extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response of result
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function diffUploadChangeset($xml, $id)
 	{

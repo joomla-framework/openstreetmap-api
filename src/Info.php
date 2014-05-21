@@ -1,29 +1,26 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
 
 /**
- * Openstreetmap API Info class for the Joomla Platform
+ * OpenStreetMap API Info class for the Joomla Framework
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
 */
-class JOpenstreetmapInfo extends JOpenstreetmapObject
+class Info extends OpenStreetMapObject
 {
 	/**
 	 * Method to get capabilities of the API
 	 *
 	 * @return	array  The XML response
 	 *
-	 * @since	13.1
+	 * @since	1.0
 	 */
 	public function getCapabilities()
 	{
@@ -51,7 +48,7 @@ class JOpenstreetmapInfo extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function retrieveMapData($left, $bottom, $right, $top)
 	{
@@ -74,7 +71,7 @@ class JOpenstreetmapInfo extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function retrievePermissions()
 	{

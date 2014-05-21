@@ -1,55 +1,59 @@
 <?php
 /**
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
+ * Tests for the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\OpenStreetMap\Tests;
+
+use Joomla\Http\Http;
+use Joomla\Input\Input;
+use Joomla\OpenStreetMap\OAuth;
+use Joomla\OpenStreetMap\User;
+use Joomla\Registry\Registry;
+
 /**
- * Test class for JOpenstreetmapInfo.
+ * Test class for Joomla\OpenStreetMap\User.
  *
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
- *
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapUserTest extends TestCase
+class UserTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    JRegistry  Options for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
-	 * @var    JHttp  Mock client object.
-	 * @since  13.1
+	 * @var    Http  Mock HTTP object.
+	 * @since  1.0
 	 */
 	protected $client;
 
 	/**
-	 * @var    JInput The input object to use in retrieving GET/POST data.
-	 * @since  13.1
+	 * @var    Input The input object to use in retrieving GET/POST data.
+	 * @since  1.0
 	 */
 	protected $input;
 
 	/**
-	 * @var    JOpenstreetmapUser Object under test.
-	 * @since  13.1
+	 * @var    User Object under test.
+	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    JOpenstreetmapOauth  Authentication object for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    OAuth  Authentication object for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $oauth;
 
 	/**
 	 * @var    string  Sample XML.
-	 * @since  13.1
+	 * @since  1.0
 	 */
 	protected $sampleXml = <<<XML
 <?xml version='1.0'?>
@@ -58,7 +62,7 @@ XML;
 
 	/**
 	 * @var    string  Sample XML error message.
-	* @since  13.1
+	* @since  1.0
 	*/
 	protected $errorString = <<<XML
 <?xml version='1.0'?>
@@ -85,13 +89,13 @@ XML;
 
 		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
 
-		$this->options = new JRegistry;
-		$this->input = new JInput;
-		$this->client = $this->getMock('JHttp', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new JOpenstreetmapOauth($this->options, $this->client, $this->input);
+		$this->options = new Registry;
+		$this->input = new Input;
+		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		$this->oauth = new OAuth($this->options, $this->client, $this->input);
 		$this->oauth->setToken($access_token);
 
-		$this->object = new JOpenstreetmapUser($this->options, $this->client, $this->oauth);
+		$this->object = new User($this->options, $this->client, $this->oauth);
 
 		$this->options->set('consumer_key', $key);
 		$this->options->set('consumer_secret', $secret);
@@ -103,11 +107,11 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testGetDetails()
 	{
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -129,12 +133,12 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testGetDetailsFailure()
 	{
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -153,12 +157,12 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testGetPreferences()
 	{
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -180,13 +184,13 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testGetPreferencesFailure()
 	{
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -205,14 +209,14 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testReplacePreferences()
 	{
 
 		$preferences = array("A" => "a");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -234,15 +238,15 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testReplacePreferencesFailure()
 	{
 
 		$preferences = array("A" => "a");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -261,7 +265,7 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testChangePreference()
 	{
@@ -269,7 +273,7 @@ XML;
 		$key = "A";
 		$preference = "a";
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -291,8 +295,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testChangePreferenceFailure()
 	{
@@ -300,7 +304,7 @@ XML;
 		$key = "A";
 		$preference = "a";
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 

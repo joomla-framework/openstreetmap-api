@@ -1,22 +1,19 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
 
 /**
- * Openstreetmap API Elements class for the Joomla Platform
+ * OpenStreetMap API Elements class for the Joomla Framework
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapElements extends JOpenstreetmapObject
+class Elements extends OpenStreetMapObject
 {
 	/**
 	 * Method to create a node
@@ -28,7 +25,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function createNode($changeset, $latitude, $longitude, $tags)
 	{
@@ -57,7 +54,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-				<osm version="0.6" generator="JOpenstreetmap">
+				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<node changeset="' . $changeset . '" lat="' . $latitude . '" lon="' . $longitude . '">'
 				. $tag_list .
 				'</node>
@@ -80,7 +77,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function createWay($changeset, $tags, $nds)
 	{
@@ -119,7 +116,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-				<osm version="0.6" generator="JOpenstreetmap">
+				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<way changeset="' . $changeset . '">'
 					. $tag_list
 					. $nd_list .
@@ -144,7 +141,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function createRelation($changeset, $tags, $members)
 	{
@@ -191,7 +188,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-				<osm version="0.6" generator="JOpenstreetmap">
+				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<relation relation="' . $changeset . '" >'
 					. $tag_list
 					. $member_list .
@@ -214,14 +211,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function readElement($element, $id)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		// Set the API base
@@ -245,14 +242,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The xml response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function updateElement($element, $xml, $id)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		$token = $this->oauth->getToken();
@@ -288,14 +285,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function deleteElement($element, $id, $version, $changeset, $latitude = null, $longitude = null)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		$token = $this->oauth->getToken();
@@ -339,14 +336,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function historyOfElement($element, $id)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		// Set the API base
@@ -370,14 +367,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array    The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function versionOfElement($element, $id ,$version)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		// Set the API base
@@ -400,14 +397,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function multiFetchElements($element, $params)
 	{
 		if ($element != 'nodes' && $element != 'ways' && $element != 'relations')
 		{
-			throw new DomainException("Element should be nodes, ways or relations");
+			throw new \DomainException("Element should be nodes, ways or relations");
 		}
 
 		// Get singular word
@@ -433,14 +430,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function relationsForElement($element, $id)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		// Set the API base
@@ -462,7 +459,7 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function waysForNode($id)
 	{
@@ -486,14 +483,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function fullElement($element, $id)
 	{
 		if ($element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a way or a relation");
+			throw new \DomainException("Element should be a way or a relation");
 		}
 
 		// Set the API base
@@ -518,14 +515,14 @@ class JOpenstreetmapElements extends JOpenstreetmapObject
 	 *
 	 * @return  array   The xml response
 	 *
-	 * @since   13.1
-	 * @throws  DomainException
+	 * @since   1.0
+	 * @throws  \DomainException
 	 */
 	public function redaction($element, $id, $version, $redaction_id)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException("Element should be a node, a way or a relation");
 		}
 
 		$token = $this->oauth->getToken();

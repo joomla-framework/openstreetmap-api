@@ -1,55 +1,59 @@
 <?php
 /**
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
+ * Tests for the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
+namespace Joomla\OpenStreetMap\Tests;
+
+use Joomla\Http\Http;
+use Joomla\Input\Input;
+use Joomla\OpenStreetMap\Elements;
+use Joomla\OpenStreetMap\OAuth;
+use Joomla\Registry\Registry;
+
 /**
- * Test class for JOpenstreetmapElements.
+ * Test class for Joomla\OpenStreetMap\Elements.
  *
- * @package     Joomla.UnitTest
- * @subpackage  Openstreetmap
- *
- * @since       13.1
+ * @since  1.0
  */
-class JOpenstreetmapElementsTest extends TestCase
+class ElementsTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    JRegistry  Options for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $options;
 
 	/**
-	 * @var    JHttp  Mock client object.
-	 * @since  13.1
+	 * @var    Http  Mock HTTP object.
+	 * @since  1.0
 	 */
 	protected $client;
 
 	/**
-	 * @var    JInput The input object to use in retrieving GET/POST data.
-	 * @since  13.1
+	 * @var    Input The input object to use in retrieving GET/POST data.
+	 * @since  1.0
 	 */
 	protected $input;
 
 	/**
-	 * @var    JOpenstreetmapElements Object under test.
-	 * @since  13.1
+	 * @var    Changesets Object under test.
+	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    JOpenstreetmapOauth  Authentication object for the Openstreetmap object.
-	 * @since  13.1
+	 * @var    OAuth  Authentication object for the OpenStreetMap object.
+	 * @since  1.0
 	 */
 	protected $oauth;
 
 	/**
 	 * @var    string  Sample XML.
-	 * @since  13.1
+	 * @since  1.0
 	 */
 	protected $sampleXml = <<<XML
 <?xml version='1.0'?>
@@ -58,7 +62,7 @@ XML;
 
 	/**
 	 * @var    string  Sample XML error message.
-	* @since  13.1
+	* @since  1.0
 	*/
 	protected $errorString = <<<XML
 <?xml version='1.0'?>
@@ -85,13 +89,13 @@ XML;
 
 		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
 
-		$this->options = new JRegistry;
-		$this->input = new JInput;
-		$this->client = $this->getMock('JHttp', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new JOpenstreetmapOauth($this->options, $this->client, $this->input);
+		$this->options = new Registry;
+		$this->input = new Input;
+		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		$this->oauth = new OAuth($this->options, $this->client, $this->input);
 		$this->oauth->setToken($access_token);
 
-		$this->object = new JOpenstreetmapElements($this->options, $this->client, $this->oauth);
+		$this->object = new Elements($this->options, $this->client, $this->oauth);
 
 		$this->options->set('consumer_key', $key);
 		$this->options->set('consumer_secret', $secret);
@@ -103,7 +107,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testCreateNode()
 	{
@@ -112,7 +116,7 @@ XML;
 		$longitude = '2';
 		$tags = array("A" => "a","B" => "b");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -134,8 +138,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testCreateNodeFailure()
 	{
@@ -144,7 +148,7 @@ XML;
 		$longitude = '2';
 		$tags = array("A" => "a","B" => "b");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -163,7 +167,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testCreateWay()
 	{
@@ -171,7 +175,7 @@ XML;
 		$tags = array("A" => "a","B" => "b");
 		$nds = array("a", "b");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -193,8 +197,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testCreateWayFailure()
 	{
@@ -202,7 +206,7 @@ XML;
 		$tags = array("A" => "a","B" => "b");
 		$nds = array("a", "b");
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -221,7 +225,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testCreateRelation()
 	{
@@ -229,7 +233,7 @@ XML;
 		$tags = array("A" => "a","B" => "b");
 		$members = array(array("type" => "node","role" => "stop","ref" => "123"),array("type" => "way","ref" => "123"));
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -251,8 +255,8 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testCreateRelationFailure()
 	{
@@ -260,7 +264,7 @@ XML;
 		$tags = array("A" => "a","B" => "b");
 		$members = array(array("type" => "node","role" => "stop","ref" => "123"),array("type" => "way","ref" => "123"));
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -279,7 +283,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedElement()
 	{
@@ -296,7 +300,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedElementFailure()
 	{
@@ -316,17 +320,17 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testReadElement($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id;
 
@@ -348,18 +352,18 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testReadElementFailure($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id;
 
@@ -378,7 +382,7 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testUpdateElement($element)
@@ -386,7 +390,7 @@ XML;
 		$id = '123';
 		$xml = "<?xml version='1.0'?><osm><element></element></osm>";
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -410,8 +414,8 @@ XML;
 	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testUpdateElementFailure($element)
@@ -419,7 +423,7 @@ XML;
 		$id = '123';
 		$xml = "<?xml version='1.0'?><osm><element></element></osm>";
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -437,10 +441,10 @@ XML;
 	 * Tests the deleteElement method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  array
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testDeleteElement($element)
@@ -451,7 +455,7 @@ XML;
 		$latitude = '2';
 		$longitude = '2';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -472,11 +476,11 @@ XML;
 	 * Tests the deleteElement method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  array
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testDeleteElementFailure($element)
@@ -487,7 +491,7 @@ XML;
 		$latitude = '2';
 		$longitude = '2';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 
@@ -505,20 +509,20 @@ XML;
 	 * Tests the historyOfElement method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testHistoryOfElement($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/history';
 
@@ -537,21 +541,21 @@ XML;
 	 * Tests the historyOfElement method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testHistoryOfElementFailure($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/history';
 
@@ -567,10 +571,10 @@ XML;
 	 * Tests the versionOfElement method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testVersionOfElement($element)
@@ -578,10 +582,10 @@ XML;
 		$id = '123';
 		$version = '1';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/' . $version;
 
@@ -600,11 +604,11 @@ XML;
 	 * Tests the versionOfElement method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testVersionOfElementFailure($element)
@@ -612,10 +616,10 @@ XML;
 		$id = '123';
 		$version = '1';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/' . $version;
 
@@ -632,7 +636,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedElements()
 	{
@@ -649,7 +653,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedElementsFailure()
 	{
@@ -666,10 +670,10 @@ XML;
 	 * Tests the multiFetchElements method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElements
 	 */
 	public function testMultiFetchElements($element)
@@ -677,10 +681,10 @@ XML;
 		$params = '123,456,789';
 		$single_element = substr($element, 0, strlen($element) - 1);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->$single_element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$single_element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '?' . $element . "=" . $params;
 
@@ -699,11 +703,11 @@ XML;
 	 * Tests the multiFetchElements method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementsFailure
 	 */
 	public function testMultiFetchElementsFailure($element)
@@ -711,10 +715,10 @@ XML;
 		$params = '123,456,789';
 		$single_element = substr($element, 0, strlen($element) - 1);
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->$single_element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$single_element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '?' . $element . "=" . $params;
 
@@ -730,20 +734,20 @@ XML;
 	 * Tests the relationsForElement method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testRelationsForElement($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/relations';
 
@@ -762,21 +766,21 @@ XML;
 	 * Tests the relationsForElement method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testRelationsForElementFailure($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->$element = new SimpleXMLElement($this->sampleXml);
+		$returnData->$element = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/relations';
 
@@ -793,16 +797,16 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function testWaysForNode()
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->way = new SimpleXMLElement($this->sampleXml);
+		$returnData->way = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'node/' . $id . '/ways';
 
@@ -822,17 +826,17 @@ XML;
 	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 */
 	public function testWaysForNodeFailure()
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->way = new SimpleXMLElement($this->sampleXml);
+		$returnData->way = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'node/' . $id . '/ways';
 
@@ -849,7 +853,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedFullElement()
 	{
@@ -865,7 +869,7 @@ XML;
 	 *
 	 * @return array
 	 *
-	 * @since 13.1
+	 * @since 1.0
 	 */
 	public function seedFullElementFailure()
 	{
@@ -881,20 +885,20 @@ XML;
 	 * Tests the fullElement method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedFullElement
 	 */
 	public function testFullElement($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
-		$returnData->node = new SimpleXMLElement($this->sampleXml);
+		$returnData->node = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/full';
 
@@ -913,21 +917,21 @@ XML;
 	 * Tests the fullElement method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedFullElementFailure
 	 */
 	public function testFullElementFailure($element)
 	{
 		$id = '123';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
-		$returnData->node = new SimpleXMLElement($this->sampleXml);
+		$returnData->node = new \SimpleXMLElement($this->sampleXml);
 
 		$path = $element . '/' . $id . '/full';
 
@@ -943,10 +947,10 @@ XML;
 	 * Tests the redaction method
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 * @dataProvider seedElement
 	 */
 	public function testRedaction($element)
@@ -955,7 +959,7 @@ XML;
 		$version = '1';
 		$redaction_id = '1';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
@@ -968,7 +972,7 @@ XML;
 
 		$this->assertThat(
 				$this->object->redaction($element, $id, $version, $redaction_id),
-				$this->equalTo(new SimpleXMLElement($this->sampleXml))
+				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
 		);
 	}
 
@@ -976,11 +980,11 @@ XML;
 	 * Tests the redaction method - failure
 	 *
 	 * @param   string  $element  Element type
-	 * 
+	 *
 	 * @return  void
 	 *
-	 * @since   13.1
-	 * @expectedException DomainException
+	 * @since   1.0
+	 * @expectedException \DomainException
 	 * @dataProvider seedElementFailure
 	 */
 	public function testRedactionFailure($element)
@@ -989,7 +993,7 @@ XML;
 		$version = '1';
 		$redaction_id = '1';
 
-		$returnData = new stdClass;
+		$returnData = new \stdClass;
 		$returnData->code = 500;
 		$returnData->body = $this->errorString;
 

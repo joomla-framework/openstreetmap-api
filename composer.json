@@ -6,7 +6,11 @@
     "homepage": "https://github.com/joomla-framework/openstreetmap-api",
     "license": "GPL-2.0+",
     "require": {
-        "php": ">=5.3.10"
+        "php": ">=5.3.10",
+	    "joomla/http": "~1.0",
+	    "joomla/input": "~1.0",
+	    "joomla/oauth1": "~1.0",
+	    "joomla/registry": "~1.0"
     },
     "autoload": {
     	"psr-4": {

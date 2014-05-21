@@ -1,29 +1,26 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
+ * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright  Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('JPATH_PLATFORM') or die();
+namespace Joomla\OpenStreetMap;
 
 /**
- * Openstreetmap API User class for the Joomla Platform
+ * OpenStreetMap API User class for the Joomla Framework
  *
- * @package     Joomla.Platform
- * @subpackage  Openstreetmap
- * @since       13.1
+ * @since  1.0
 */
-class JOpenstreetmapUser extends JOpenstreetmapObject
+class User extends OpenStreetMapObject
 {
 	/**
 	 * Method to get user details
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function getDetails()
 	{
@@ -51,7 +48,7 @@ class JOpenstreetmapUser extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function getPreferences()
 	{
@@ -81,7 +78,7 @@ class JOpenstreetmapUser extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function replacePreferences($preferences)
 	{
@@ -110,7 +107,7 @@ class JOpenstreetmapUser extends JOpenstreetmapObject
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
-			<osm version="0.6" generator="JOpenstreetmap">
+			<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<preferences>'
 				. $preference_list .
 				'</preferences>
@@ -132,7 +129,7 @@ class JOpenstreetmapUser extends JOpenstreetmapObject
 	 *
 	 * @return  array  The XML response
 	 *
-	 * @since   13.1
+	 * @since   1.0
 	 */
 	public function changePreference($key, $preference)
 	{
