@@ -8,30 +8,15 @@
 
 namespace Joomla\OpenStreetMap\Tests;
 
-use Joomla\Http\Http;
-use Joomla\Input\Input;
 use Joomla\OpenStreetMap\OpenStreetMapObject;
-use Joomla\Registry\Registry;
 
 /**
  * Test class for Joomla\OpenStreetMap\OpenStreetMapObject.
  *
  * @since  1.0
  */
-class OpenStreetMapObjectTest extends \PHPUnit_Framework_TestCase
+class OpenStreetMapObjectTest extends Cases\OSMTestCase
 {
-	/**
-	 * @var    Registry  Options for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $options;
-
-	/**
-	 * @var    Http  Mock HTTP object.
-	 * @since  1.0
-	 */
-	protected $client;
-
 	/**
 	 * @var    OpenStreetMapObject  Object under test.
 	 * @since  1.0
@@ -42,14 +27,13 @@ class OpenStreetMapObjectTest extends \PHPUnit_Framework_TestCase
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 *
-	 * @access protected
+	 * @return  void
 	 *
-	 * @return void
+	 * @since   1.0
 	 */
 	protected function setUp()
 	{
-		$this->options = new Registry;
-		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		parent::setUp();
 
 		$this->object = $this->getMockForAbstractClass('\\Joomla\\OpenStreetMap\\OpenStreetMapObject', array($this->options, $this->client));
 	}
@@ -57,9 +41,9 @@ class OpenStreetMapObjectTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * Tests the setOption method
 	 *
-	 * @return void
+	 * @return  void
 	 *
-	 * @since 1.0
+	 * @since   1.0
 	 */
 	public function testSetOption()
 	{

@@ -8,98 +8,34 @@
 
 namespace Joomla\OpenStreetMap\Tests;
 
-use Joomla\Http\Http;
-use Joomla\Input\Input;
 use Joomla\OpenStreetMap\Info;
-use Joomla\OpenStreetMap\OAuth;
-use Joomla\Registry\Registry;
 
 /**
  * Test class for Joomla\OpenStreetMap\Info.
  *
  * @since  1.0
  */
-class InfoTest extends \PHPUnit_Framework_TestCase
+class InfoTest extends Cases\OSMTestCase
 {
 	/**
-	 * @var    Registry  Options for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $options;
-
-	/**
-	 * @var    Http  Mock HTTP object.
-	 * @since  1.0
-	 */
-	protected $client;
-
-	/**
-	 * @var    Input The input object to use in retrieving GET/POST data.
-	 * @since  1.0
-	 */
-	protected $input;
-
-	/**
-	 * @var    Info Object under test.
+	 * @var    Info  Object under test.
 	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    OAuth  Authentication object for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $oauth;
-
-	/**
-	 * @var    string  Sample XML.
-	 * @since  1.0
-	 */
-	protected $sampleXml = <<<XML
-<?xml version='1.0'?>
-<osm></osm>
-XML;
-
-	/**
-	 * @var    string  Sample XML error message.
-	* @since  1.0
-	*/
-	protected $errorString = <<<XML
-<?xml version='1.0'?>
-<osm>ERROR</osm>
-XML;
-
-	/**
 	 * Sets up the fixture, for example, opens a network connection.
-	* This method is called before a test is executed.
-	*
-	* @access protected
-	*
-	* @return void
-	*/
+	 * This method is called before a test is executed.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
 	protected function setUp()
 	{
-		$_SERVER['HTTP_HOST'] = 'example.com';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0';
-		$_SERVER['REQUEST_URI'] = '/index.php';
-		$_SERVER['SCRIPT_NAME'] = '/index.php';
-
-		$key = "app_key";
-		$secret = "app_secret";
-
-		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
-
-		$this->options = new Registry;
-		$this->input = new Input;
-		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new OAuth($this->options, $this->client, $this->input);
-		$this->oauth->setToken($access_token);
+		parent::setUp();
 
 		$this->object = new Info($this->options, $this->client, $this->oauth);
-
-		$this->options->set('consumer_key', $key);
-		$this->options->set('consumer_secret', $secret);
-		$this->options->set('sendheaders', true);
 	}
 
 	/**
@@ -118,13 +54,13 @@ XML;
 		$path = 'capabilities';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->getCapabilities(),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->getCapabilities()
 		);
 	}
 
@@ -140,14 +76,14 @@ XML;
 	{
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'capabilities';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->getCapabilities();
 	}
@@ -161,10 +97,10 @@ XML;
 	 */
 	public function testRetrieveMapData()
 	{
-		$left = '1';
+		$left   = '1';
 		$bottom = '1';
-		$right = '2';
-		$top = '2';
+		$right  = '2';
+		$top    = '2';
 
 		$returnData = new \stdClass;
 		$returnData->code = 200;
@@ -173,13 +109,13 @@ XML;
 		$path = 'map?bbox=' . $left . ',' . $bottom . ',' . $right . ',' . $top;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->retrieveMapData($left, $bottom, $right, $top),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->retrieveMapData($left, $bottom, $right, $top)
 		);
 	}
 
@@ -193,21 +129,21 @@ XML;
 	 */
 	public function testRetrieveMapDataFailure()
 	{
-		$left = '1';
+		$left   = '1';
 		$bottom = '1';
-		$right = '2';
-		$top = '2';
+		$right  = '2';
+		$top    = '2';
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'map?bbox=' . $left . ',' . $bottom . ',' . $right . ',' . $top;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->retrieveMapData($left, $bottom, $right, $top);
 	}
@@ -221,7 +157,6 @@ XML;
 	 */
 	public function testRetrievePermissions()
 	{
-
 		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
@@ -229,13 +164,13 @@ XML;
 		$path = 'permissions';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->retrievePermissions(),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->retrievePermissions()
 		);
 	}
 
@@ -249,17 +184,16 @@ XML;
 	 */
 	public function testRetrievePermissionsFailure()
 	{
-
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'permissions';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->retrievePermissions();
 	}

@@ -9,7 +9,6 @@
 namespace Joomla\OpenStreetMap\Tests;
 
 use Joomla\Http\Http;
-use Joomla\OpenStreetMap\OAuth;
 use Joomla\OpenStreetMap\OpenStreetMap;
 use Joomla\Registry\Registry;
 
@@ -18,20 +17,8 @@ use Joomla\Registry\Registry;
  *
  * @since  1.0
  */
-class OpenStreetMapTest extends \PHPUnit_Framework_TestCase
+class OpenStreetMapTest extends Cases\OSMTestCase
 {
-	/**
-	 * @var    Registry  Options for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $options;
-
-	/**
-	 * @var    Http  Mock HTTP object.
-	 * @since  1.0
-	 */
-	protected $client;
-
 	/**
 	 * @var    OpenStreetMap  Object under test.
 	 * @since  1.0
@@ -39,38 +26,18 @@ class OpenStreetMapTest extends \PHPUnit_Framework_TestCase
 	protected $object;
 
 	/**
-	 * @var    OAuth  OAuth1 client
-	 * @since  1.0
-	 */
-	protected $oauth;
-
-	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 *
-	 * @return void
+	 * @return  void
+	 *
+	 * @since   1.0
 	 */
 	protected function setUp()
 	{
-		$_SERVER['HTTP_HOST'] = 'example.com';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0';
-		$_SERVER['REQUEST_URI'] = '/index.php';
-		$_SERVER['SCRIPT_NAME'] = '/index.php';
-
-		$this->options = new Registry;
-		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
+		parent::setUp();
 
 		$this->object = new OpenStreetMap($this->oauth, $this->options, $this->client);
-	}
-
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 *
-	 * @return void
-	 */
-	protected function tearDown()
-	{
 	}
 
 	/**

@@ -8,104 +8,40 @@
 
 namespace Joomla\OpenStreetMap\Tests;
 
-use Joomla\Http\Http;
-use Joomla\Input\Input;
 use Joomla\OpenStreetMap\Changesets;
-use Joomla\OpenStreetMap\OAuth;
-use Joomla\Registry\Registry;
 
 /**
  * Test class for Joomla\OpenStreetMap\Changesets.
  *
  * @since  1.0
  */
-class ChangesetsTest extends \PHPUnit_Framework_TestCase
+class ChangesetsTest extends Cases\OSMTestCase
 {
 	/**
-	 * @var    Registry  Options for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $options;
-
-	/**
-	 * @var    Http  Mock HTTP object.
-	 * @since  1.0
-	 */
-	protected $client;
-
-	/**
-	 * @var    Input The input object to use in retrieving GET/POST data.
-	 * @since  1.0
-	 */
-	protected $input;
-
-	/**
-	 * @var    Changesets Object under test.
+	 * @var    Changesets  Object under test.
 	 * @since  1.0
 	 */
 	protected $object;
 
 	/**
-	 * @var    OAuth  Authentication object for the OpenStreetMap object.
-	 * @since  1.0
-	 */
-	protected $oauth;
-
-	/**
-	 * @var    string  Sample XML.
-	 * @since  1.0
-	 */
-	protected $sampleXml = <<<XML
-<?xml version='1.0'?>
-<osm></osm>
-XML;
-
-	/**
-	 * @var    string  Sample XML error message.
-	* @since  1.0
-	*/
-	protected $errorString = <<<XML
-<?xml version='1.0'?>
-<osm>ERROR</osm>
-XML;
-
-	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 *
-	 * @access protected
+	 * @return  void
 	 *
-	 * @return void
+	 * @since   1.0
 	 */
 	protected function setUp()
 	{
-		$_SERVER['HTTP_HOST'] = 'example.com';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0';
-		$_SERVER['REQUEST_URI'] = '/index.php';
-		$_SERVER['SCRIPT_NAME'] = '/index.php';
-
-		$key = "app_key";
-		$secret = "app_secret";
-
-		$access_token = array('key' => 'token_key', 'secret' => 'token_secret');
-
-		$this->options = new Registry;
-		$this->input = new Input;
-		$this->client = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
-		$this->oauth = new OAuth($this->options, $this->client, $this->input);
-		$this->oauth->setToken($access_token);
+		parent::setUp();
 
 		$this->object = new Changesets($this->options, $this->client, $this->oauth);
-
-		$this->options->set('consumer_key', $key);
-		$this->options->set('consumer_secret', $secret);
-		$this->options->set('sendheaders', true);
 	}
 
 	/**
 	 * Tests the createChangeset method
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
@@ -113,33 +49,32 @@ XML;
 	{
 		$changeset = array
 		(
-				array
-				(
-						"comment" => "my changeset comment",
-						"created_by" => "Josm"
-				),
-				array
-				(
-						"A" => "a",
-						"B" => "b"
-				)
+			array
+			(
+				'comment'    => 'my changeset comment',
+				'created_by' => 'Josm'
+			),
+			array
+			(
+				'A' => 'a',
+				'B' => 'b'
+			)
 		);
 
 		$returnData = new \stdClass;
 		$returnData->code = 200;
 		$returnData->body = $this->sampleXml;
 
-		// 		$path = 'http://api.openstreetmap.org/api/0.6/changeset/create';
 		$path = 'changeset/create';
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->createChangeset($changeset),
-				$this->equalTo($this->sampleXml)
+		$this->assertEquals(
+			$this->sampleXml,
+			$this->object->createChangeset($changeset)
 		);
 	}
 
@@ -149,34 +84,34 @@ XML;
 	 * @return  void
 	 *
 	 * @since   1.0
-	 * @expectedException DomainException
+	 * @expectedException \DomainException
 	 */
 	public function testCreateChangesetFailure()
 	{
 		$changeset = array
 		(
-				array
-				(
-						"comment" => "my changeset comment",
-						"created_by" => "JOsm"
-				),
-				array
-				(
-						"A" => "a",
-						"B" => "b"
-				)
+			array
+			(
+				'comment'    => 'my changeset comment',
+				'created_by' => 'JOsm'
+			),
+			array
+			(
+				'A' => 'a',
+				'B' => 'b'
+			)
 		);
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'changeset/create';
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->createChangeset($changeset);
 	}
@@ -200,13 +135,13 @@ XML;
 		$path = 'changeset/' . $id;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->readChangeset($id),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->readChangeset($id)
 		);
 	}
 
@@ -224,15 +159,15 @@ XML;
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 		$returnData->changeset = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->readChangeset($id);
 	}
@@ -240,17 +175,17 @@ XML;
 	/**
 	 * Tests the updateChangeset method
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
 	public function testUpdateChangeset()
 	{
-		$id = '14153708';
+		$id   = '14153708';
 		$tags = array
 		(
-				"comment" => "my changeset comment",
-				"created_by" => "JOsm (en)"
+			'comment'    => 'my changeset comment',
+			'created_by' => 'JOsm (en)'
 		);
 
 		$returnData = new \stdClass;
@@ -260,43 +195,43 @@ XML;
 		$path = 'changeset/' . $id;
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->updateChangeset($id, $tags),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->updateChangeset($id, $tags)
 		);
 	}
 
 	/**
 	 * Tests the updateChangeset method - failure
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @expectedException \DomainException
 	 */
 	public function testUpdateChangesetFailure()
 	{
-		$id = '14153708';
+		$id   = '14153708';
 		$tags = array
 		(
-				"comment" => "my changeset comment",
-				"created_by" => "JOsm (en)"
+			'comment'    => 'my changeset comment',
+			'created_by' => 'JOsm (en)'
 		);
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'changeset/' . $id;
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->updateChangeset($id, $tags);
 	}
@@ -304,7 +239,7 @@ XML;
 	/**
 	 * Tests the closeChangeset method
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
@@ -319,9 +254,9 @@ XML;
 		$path = 'changeset/' . $id . '/close';
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->assertNull($this->object->closeChangeset($id));
 	}
@@ -329,7 +264,7 @@ XML;
 	/**
 	 * Tests the closeChangeset method - failure
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @expectedException \DomainException
@@ -340,14 +275,14 @@ XML;
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'changeset/' . $id . '/close';
 
 		$this->client->expects($this->once())
-		->method('put')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('put')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->closeChangeset($id);
 	}
@@ -371,13 +306,13 @@ XML;
 		$path = 'changeset/' . $id . '/download';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->downloadChangeset($id),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->downloadChangeset($id)
 		);
 	}
 
@@ -395,15 +330,15 @@ XML;
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 		$returnData->create = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changeset/' . $id . '/download';
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->downloadChangeset($id);
 	}
@@ -411,14 +346,17 @@ XML;
 	/**
 	 * Tests the expandBBoxChangeset method
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
 	public function testExpandBBoxChangeset()
 	{
 		$id = '14153708';
-		$node_list = array(array(4,5),array(6,7));
+		$node_list = array(
+			array(4, 5),
+			array(6, 7)
+		);
 
 		$returnData = new \stdClass;
 		$returnData->code = 200;
@@ -427,20 +365,20 @@ XML;
 		$path = 'changeset/' . $id . '/expand_bbox';
 
 		$this->client->expects($this->once())
-		->method('post')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('post')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->expandBBoxChangeset($id, $node_list),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->expandBBoxChangeset($id, $node_list)
 		);
 	}
 
 	/**
 	 * Tests the expandBBoxChangeset method - failure
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @expectedException \DomainException
@@ -448,18 +386,21 @@ XML;
 	public function testExpandBBoxChangesetFailure()
 	{
 		$id = '14153708';
-		$node_list = array(array(4,5),array(6,7));
+		$node_list = array(
+			array(4, 5),
+			array(6, 7)
+		);
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'changeset/' . $id . '/expand_bbox';
 
 		$this->client->expects($this->once())
-		->method('post')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('post')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->expandBBoxChangeset($id, $node_list);
 	}
@@ -483,13 +424,13 @@ XML;
 		$path = 'changesets/' . $param;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->queryChangeset($param),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->queryChangeset($param)
 		);
 	}
 
@@ -507,15 +448,15 @@ XML;
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 		$returnData->osm = new \SimpleXMLElement($this->sampleXml);
 
 		$path = 'changesets/' . $param;
 
 		$this->client->expects($this->once())
-		->method('get')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('get')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->queryChangeset($param);
 	}
@@ -523,7 +464,7 @@ XML;
 	/**
 	 * Tests the diffUploadChangeset method
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 */
@@ -545,20 +486,20 @@ XML;
 		$path = 'changeset/' . $id . '/upload';
 
 		$this->client->expects($this->once())
-		->method('post')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('post')
+			->with($path)
+			->will($this->returnValue($returnData));
 
-		$this->assertThat(
-				$this->object->diffUploadChangeset($xml, $id),
-				$this->equalTo(new \SimpleXMLElement($this->sampleXml))
+		$this->assertEquals(
+			new \SimpleXMLElement($this->sampleXml),
+			$this->object->diffUploadChangeset($xml, $id)
 		);
 	}
 
 	/**
 	 * Tests the diffUploadChangeset method - failure
 	 *
-	 * @return  array
+	 * @return  void
 	 *
 	 * @since   1.0
 	 * @expectedException \DomainException
@@ -576,14 +517,14 @@ XML;
 
 		$returnData = new \stdClass;
 		$returnData->code = 500;
-		$returnData->body = $this->errorString;
+		$returnData->body = $this->errorXml;
 
 		$path = 'changeset/' . $id . '/upload';
 
 		$this->client->expects($this->once())
-		->method('post')
-		->with($path)
-		->will($this->returnValue($returnData));
+			->method('post')
+			->with($path)
+			->will($this->returnValue($returnData));
 
 		$this->object->diffUploadChangeset($xml, $id);
 	}
