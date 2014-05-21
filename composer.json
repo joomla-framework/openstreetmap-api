@@ -1,0 +1,17 @@
+{
+    "name": "joomla/openstreetmap",
+    "type": "joomla-package",
+    "description": "Joomla OpenStreetMap Package",
+    "keywords": ["joomla", "framework", "openstreetmap"],
+    "homepage": "https://github.com/joomla-framework/openstreetmap-api",
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=5.3.10"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"Joomla\\OpenStreetMap\\": "src/",
+            "Joomla\\OpenStreetMap\\Tests\\": "Tests/"
+    	}
+    }
+}
