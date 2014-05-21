@@ -8,9 +8,7 @@
 
 namespace Joomla\OpenStreetMap\Tests;
 
-use Joomla\Http\Http;
 use Joomla\OpenStreetMap\OpenStreetMap;
-use Joomla\Registry\Registry;
 
 /**
  * Test class for Joomla\OpenStreetMap\OpenStreetMap.
@@ -141,7 +139,7 @@ class OpenStreetMapTest extends Cases\OSMTestCase
 
 		$this->assertEquals(
 			'https://example.com/settest',
-			$this->options->get('api.url')
+			$this->options['api.url']
 		);
 	}
 
@@ -154,7 +152,7 @@ class OpenStreetMapTest extends Cases\OSMTestCase
 	 */
 	public function testGetOption()
 	{
-		$this->options->set('api.url', 'https://example.com/gettest');
+		$this->options['api.url'] = 'https://example.com/gettest';
 
 		$this->assertEquals(
 			'https://example.com/gettest',

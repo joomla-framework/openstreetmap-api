@@ -9,7 +9,6 @@
 namespace Joomla\OpenStreetMap;
 
 use Joomla\Http\Http;
-use Joomla\Registry\Registry;
 
 /**
  * OpenStreetMap API object class for the Joomla Framework
@@ -21,7 +20,7 @@ abstract class OpenStreetMapObject
 	/**
 	 * Options for the OpenStreetMap object.
 	 *
-	 * @var    Registry
+	 * @var    array
 	 * @since  1.0
 	 */
 	protected $options;
@@ -45,17 +44,17 @@ abstract class OpenStreetMapObject
 	/**
 	 * Constructor
 	 *
-	 * @param   Registry  &$options  OpenStreetMap options object.
-	 * @param   Http      $client    The HTTP client object.
-	 * @param   OAuth     $oauth     OpenStreetMap OAuth client
+	 * @param   array  $options  OpenStreetMap options object.
+	 * @param   Http   $client   The HTTP client object.
+	 * @param   OAuth  $oauth    OpenStreetMap OAuth client
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(Registry &$options = null, Http $client = null, OAuth $oauth = null)
+	public function __construct($options = array(), Http $client = null, OAuth $oauth = null)
 	{
-		$this->options = isset($options) ? $options : new Registry;
-		$this->client = isset($client) ? $client : new Http($this->options);
-		$this->oauth = $oauth;
+		$this->options = $options;
+		$this->client  = isset($client) ? $client : new Http($this->options);
+		$this->oauth   = $oauth;
 	}
 
 	/**
@@ -69,7 +68,7 @@ abstract class OpenStreetMapObject
 	 */
 	public function getOption($key)
 	{
-		return $this->options->get($key);
+		return isset($this->options[$key]) ? $this->options[$key] : null;
 	}
 
 	/**
@@ -84,7 +83,7 @@ abstract class OpenStreetMapObject
 	 */
 	public function setOption($key, $value)
 	{
-		$this->options->set($key, $value);
+		$this->options[$key] = $value;
 
 		return $this;
 	}

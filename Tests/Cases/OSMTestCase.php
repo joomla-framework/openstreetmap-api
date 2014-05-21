@@ -11,7 +11,6 @@ namespace Joomla\OpenStreetMap\Tests\Cases;
 use Joomla\Http\Http;
 use Joomla\Input\Input;
 use Joomla\OpenStreetMap\OAuth;
-use Joomla\Registry\Registry;
 use Joomla\Test\WebInspector;
 
 /**
@@ -22,7 +21,7 @@ use Joomla\Test\WebInspector;
 abstract class OSMTestCase extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var    Registry  Options for the OpenStreetMap object.
+	 * @var    array  Options for the OpenStreetMap object.
 	 * @since  1.0
 	 */
 	protected $options;
@@ -89,16 +88,12 @@ XML;
 		$key    = 'app_key';
 		$secret = 'app_secret';
 
-		$this->options     = new Registry;
+		$this->options     = array('consumer_key' => $key, 'consumer_secret' => $secret, 'sendheaders' => true);
 		$this->input       = new Input;
 		$this->client      = $this->getMock('\\Joomla\\Http\\Http', array('get', 'post', 'delete', 'put'));
 		$this->application = new WebInspector;
 		$this->oauth       = new OAuth($this->options, $this->client, $this->input, $this->application);
 
 		$this->oauth->setToken(array('key' => 'token_key', 'secret' => 'token_secret'));
-
-		$this->options->set('consumer_key', $key);
-		$this->options->set('consumer_secret', $secret);
-		$this->options->set('sendheaders', true);
 	}
 }

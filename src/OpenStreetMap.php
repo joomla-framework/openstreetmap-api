@@ -9,7 +9,6 @@
 namespace Joomla\OpenStreetMap;
 
 use Joomla\Http\Http;
-use Joomla\Registry\Registry;
 
 /**
  * Joomla Framework class for interacting with the OpenStreetMap API.
@@ -21,7 +20,7 @@ class OpenStreetMap
 	/**
 	 * Options for the OpenStreetMap object.
 	 *
-	 * @var    Registry
+	 * @var    array
 	 * @since  1.0
 	 */
 	protected $options;
@@ -85,20 +84,23 @@ class OpenStreetMap
 	/**
 	 * Constructor.
 	 *
-	 * @param   OAuth     $oauth    OpenStreetMap OAuth client
-	 * @param   Registry  $options  OpenStreetMap options object
-	 * @param   Http      $client   The HTTP client object
+	 * @param   OAuth  $oauth    OpenStreetMap OAuth client
+	 * @param   array  $options  OpenStreetMap options object
+	 * @param   Http   $client   The HTTP client object
 	 *
 	 * @since   1.0
 	 */
-	public function __construct(OAuth $oauth = null, Registry $options = null, Http $client = null)
+	public function __construct(OAuth $oauth = null, $options = array(), Http $client = null)
 	{
-		$this->oauth = $oauth;
-		$this->options = isset($options) ? $options : new Registry;
+		$this->oauth   = $oauth;
+		$this->options = $options;
 		$this->client  = isset($client) ? $client : new Http($this->options);
 
 		// Setup the default API url if not already set.
-		$this->options->def('api.url', 'http://api.openstreetmap.org/api/0.6/');
+		if (!isset($this->options['api.url']))
+		{
+			$this->options['api.url'] = 'http://api.openstreetmap.org/api/0.6/';
+		}
 	}
 
 	/**
@@ -139,7 +141,7 @@ class OpenStreetMap
 	 */
 	public function getOption($key)
 	{
-		return $this->options->get($key);
+		return isset($this->options[$key]) ? $this->options[$key] : null;
 	}
 
 	/**
@@ -154,7 +156,7 @@ class OpenStreetMap
 	 */
 	public function setOption($key, $value)
 	{
-		$this->options->set($key, $value);
+		$this->options[$key] = $value;
 
 		return $this;
 	}
