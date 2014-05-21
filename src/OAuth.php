@@ -8,10 +8,11 @@
 
 namespace Joomla\OpenStreetMap;
 
+use Joomla\Application\AbstractWebApplication;
 use Joomla\Http\Http;
 use Joomla\Http\Response;
 use Joomla\Input\Input;
-use Joomla\Oauth1\Client;
+use Joomla\OAuth1\Client;
 
 /**
  * Joomla Framework class for generating the OpenStreetMap API access token.

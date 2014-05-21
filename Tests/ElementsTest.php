@@ -350,7 +350,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->readElement($element, $id)
 		);
 	}
@@ -542,7 +542,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->historyOfElement($element, $id)
 		);
 	}
@@ -605,7 +605,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->versionOfElement($element, $id, $version)
 		);
 	}
@@ -669,7 +669,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->multiFetchElements($element, $params)
 		);
 	}
@@ -732,7 +732,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->relationsForElement($element, $id)
 		);
 	}
@@ -791,7 +791,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->waysForNode($id)
 		);
 	}
@@ -850,7 +850,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->fullElement($element, $id)
 		);
 	}
@@ -913,7 +913,7 @@ class ElementsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->redaction($element, $id, $version, $redaction_id)
 		);
 	}

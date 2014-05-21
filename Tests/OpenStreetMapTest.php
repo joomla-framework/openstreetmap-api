@@ -139,7 +139,7 @@ class OpenStreetMapTest extends Cases\OSMTestCase
 
 		$this->assertEquals(
 			'https://example.com/settest',
-			$this->options['api.url']
+			$this->object->getOption('api.url')
 		);
 	}
 
@@ -152,11 +152,11 @@ class OpenStreetMapTest extends Cases\OSMTestCase
 	 */
 	public function testGetOption()
 	{
-		$this->options['api.url'] = 'https://example.com/gettest';
+		$this->object->setOption('api.url', 'https://example.com/gettest');
 
 		$this->assertEquals(
 			'https://example.com/gettest',
-			$this->object->getOption('api.url', 'https://example.com/gettest')
+			$this->object->getOption('api.url')
 		);
 	}
 }

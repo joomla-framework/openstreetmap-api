@@ -51,7 +51,7 @@ class OpenStreetMapObjectTest extends Cases\OSMTestCase
 
 		$this->assertEquals(
 			'https://example.com/settest',
-			$this->options->get('api.url')
+			$this->object->getOption('api.url')
 		);
 	}
 }

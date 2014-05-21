@@ -65,7 +65,7 @@ class GpsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->retrieveGps($left, $bottom, $right, $top, $page)
 		);
 	}
@@ -129,7 +129,7 @@ class GpsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->uploadTrace($file, $description, $tags, $public, $visibility, $username, $password)
 		);
 	}
@@ -191,7 +191,7 @@ class GpsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->downloadTraceMetadetails($id, $username, $password)
 		);
 	}
@@ -249,7 +249,7 @@ class GpsTest extends Cases\OSMTestCase
 			->will($this->returnValue($returnData));
 
 		$this->assertEquals(
-			$this->sampleXml,
+			new \SimpleXMLElement($this->sampleXml),
 			$this->object->downloadTraceMetadata($id, $username, $password)
 		);
 	}
