@@ -23,36 +23,35 @@ class OAuth extends Client
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $options  OAuth options object.
-	 * @param   Http   $client   The HTTP client object.
-	 * @param   Input  $input    The input object
+	 * @param   array                   $options      OAuth options object.
+	 * @param   Http                    $client       The HTTP client object.
+	 * @param   Input                   $input        The Input object
+	 * @param   AbstractWebApplication  $application  The application object.
 	 *
 	 * @since   1.0
 	 */
-	public function __construct($options = array(), Http $client = null, Input $input = null)
+	public function __construct($options = array(), Http $client, Input $input, AbstractWebApplication $application)
 	{
-		$this->options = $options;
-
 		// Setup the access token URL if not already set.
-		if (!isset($this->options['accessTokenURL']))
+		if (!isset($options['accessTokenURL']))
 		{
-			$this->options['accessTokenURL'] = 'http://www.openstreetmap.org/oauth/access_token';
+			$options['accessTokenURL'] = 'http://www.openstreetmap.org/oauth/access_token';
 		}
 
 		// Setup the authorisation URL if not already set.
-		if (!isset($this->options['authoriseURL']))
+		if (!isset($options['authoriseURL']))
 		{
-			$this->options['authoriseURL'] = 'http://www.openstreetmap.org/oauth/authorize';
+			$options['authoriseURL'] = 'http://www.openstreetmap.org/oauth/authorize';
 		}
 
 		// Setup the request token URL if not already set.
-		if (!isset($this->options['requestTokenURL']))
+		if (!isset($options['requestTokenURL']))
 		{
-			$this->options['requestTokenURL'] = 'http://www.openstreetmap.org/oauth/request_token';
+			$options['requestTokenURL'] = 'http://www.openstreetmap.org/oauth/request_token';
 		}
 
 		// Call the OAuth1\Client constructor to setup the object.
-		parent::__construct($this->options, $client, $input, null, '1.0');
+		parent::__construct($options, $client, $input, $application, '1.0');
 	}
 
 	/**
