@@ -17,7 +17,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Joomla\\OpenStreetMap\\": "src/",
+            "Joomla\\OpenStreetMap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Joomla\\OpenStreetMap\\Tests\\": "Tests/"
         }
     }
