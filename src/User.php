@@ -12,7 +12,7 @@ namespace Joomla\OpenStreetMap;
  * OpenStreetMap API User class for the Joomla Framework
  *
  * @since  1.0
-*/
+ */
 class User extends OpenStreetMapObject
 {
 	/**
