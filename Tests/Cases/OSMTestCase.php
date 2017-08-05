@@ -12,13 +12,14 @@ use Joomla\Http\Http;
 use Joomla\Input\Input;
 use Joomla\OpenStreetMap\OAuth;
 use Joomla\Test\WebInspector;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Abstract test case for the OpenStreetMap package.
  *
  * @since  1.0
  */
-abstract class OSMTestCase extends \PHPUnit_Framework_TestCase
+abstract class OSMTestCase extends TestCase
 {
 	/**
 	 * @var    array  Options for the OpenStreetMap object.
