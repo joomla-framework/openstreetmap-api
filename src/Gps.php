@@ -41,9 +41,7 @@ class Gps extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'GET', array());
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 
 	/**
@@ -84,9 +82,7 @@ class Gps extends OpenStreetMapObject
 		$header = array_merge($header, array('Authorization' => 'Basic ' . base64_encode($username . ':' . $password)));
 
 		// Send the request.
-		$response = $this->sendRequest($path, 'POST', $header, array());
-
-		return $response;
+		return $this->sendRequest($path, 'POST', $header, array());
 	}
 
 	/**
@@ -109,9 +105,7 @@ class Gps extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path, 'GET', array('Authorization' => 'Basic ' . base64_encode($username . ':' . $password)));
-
-		return $xml_string;
+		return $this->sendRequest($path, 'GET', array('Authorization' => 'Basic ' . base64_encode($username . ':' . $password)));
 	}
 
 	/**
@@ -134,8 +128,6 @@ class Gps extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path, 'GET', array('Authorization' => 'Basic ' . base64_encode($username . ':' . $password)));
-
-		return $xml_string;
+		return $this->sendRequest($path, 'GET', array('Authorization' => 'Basic ' . base64_encode($username . ':' . $password)));
 	}
 }

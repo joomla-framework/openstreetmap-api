@@ -125,8 +125,6 @@ abstract class OpenStreetMapObject
 			throw new \DomainException($error, $response->code);
 		}
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 }
