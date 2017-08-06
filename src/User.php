@@ -96,20 +96,20 @@ class User extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Create a list of preferences
-		$preference_list = '';
+		$preferenceList = '';
 
 		if (!empty($preferences))
 		{
 			foreach ($preferences as $key => $value)
 			{
-				$preference_list .= '<preference k="' . $key . '" v="' . $value . '"/>';
+				$preferenceList .= '<preference k="' . $key . '" v="' . $value . '"/>';
 			}
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 			<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<preferences>'
-				. $preference_list .
+				. $preferenceList .
 				'</preferences>
 			</osm>';
 

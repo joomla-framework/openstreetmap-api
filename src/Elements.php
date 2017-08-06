@@ -42,21 +42,21 @@ class Elements extends OpenStreetMapObject
 		// Build the request path.
 		$path = $this->getOption('api.url') . $base;
 
-		$tag_list = '';
+		$tagList = '';
 
 		// Create XML node
 		if (!empty($tags))
 		{
 			foreach ($tags as $key => $value)
 			{
-				$tag_list .= '<tag k="' . $key . '" v="' . $value . '"/>';
+				$tagList .= '<tag k="' . $key . '" v="' . $value . '"/>';
 			}
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<node changeset="' . $changeset . '" lat="' . $latitude . '" lon="' . $longitude . '">'
-				. $tag_list .
+				. $tagList .
 				'</node>
 				</osm>';
 
@@ -94,32 +94,32 @@ class Elements extends OpenStreetMapObject
 		// Build the request path.
 		$path = $this->getOption('api.url') . $base;
 
-		$tag_list = '';
+		$tagList = '';
 
 		// Create XML node
 		if (!empty($tags))
 		{
 			foreach ($tags as $key => $value)
 			{
-				$tag_list .= '<tag k="' . $key . '" v="' . $value . '"/>';
+				$tagList .= '<tag k="' . $key . '" v="' . $value . '"/>';
 			}
 		}
 
-		$nd_list = '';
+		$ndList = '';
 
 		if (!empty($nds))
 		{
 			foreach ($nds as $value)
 			{
-				$nd_list .= '<nd ref="' . $value . '"/>';
+				$ndList .= '<nd ref="' . $value . '"/>';
 			}
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<way changeset="' . $changeset . '">'
-					. $tag_list
-					. $nd_list .
+					. $tagList
+					. $ndList .
 				'</way>
 			</osm>';
 
@@ -158,19 +158,19 @@ class Elements extends OpenStreetMapObject
 		// Build the request path.
 		$path = $this->getOption('api.url') . $base;
 
-		$tag_list = '';
+		$tagList = '';
 
 		// Create XML node
 		if (!empty($tags))
 		{
 			foreach ($tags as $key => $value)
 			{
-				$tag_list .= '<tag k="' . $key . '" v="' . $value . '"/>';
+				$tagList .= '<tag k="' . $key . '" v="' . $value . '"/>';
 			}
 		}
 
 		// Members
-		$member_list = '';
+		$memberList = '';
 
 		if (!empty($members))
 		{
@@ -178,11 +178,11 @@ class Elements extends OpenStreetMapObject
 			{
 				if ($member['type'] == "node")
 				{
-					$member_list .= '<member type="' . $member['type'] . '" role="' . $member['role'] . '" ref="' . $member['ref'] . '"/>';
+					$memberList .= '<member type="' . $member['type'] . '" role="' . $member['role'] . '" ref="' . $member['ref'] . '"/>';
 				}
 				elseif ($member['type'] == "way")
 				{
-					$member_list .= '<member type="' . $member['type'] . '" ref="' . $member['ref'] . '"/>';
+					$memberList .= '<member type="' . $member['type'] . '" ref="' . $member['ref'] . '"/>';
 				}
 			}
 		}
@@ -190,8 +190,8 @@ class Elements extends OpenStreetMapObject
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<relation relation="' . $changeset . '" >'
-					. $tag_list
-					. $member_list .
+					. $tagList
+					. $memberList .
 				'</relation>
 			</osm>';
 
@@ -228,9 +228,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->$element;
+		return $xmlString->$element;
 	}
 
 	/**
@@ -353,9 +353,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->$element;
+		return $xmlString->$element;
 	}
 
 	/**
@@ -384,9 +384,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->$element;
+		return $xmlString->$element;
 	}
 
 	/**
@@ -408,7 +408,7 @@ class Elements extends OpenStreetMapObject
 		}
 
 		// Get singular word
-		$single_element = substr($element, 0, strlen($element) - 1);
+		$singleElement = substr($element, 0, strlen($element) - 1);
 
 		// Set the API base, $params is a string with comma seperated values
 		$base = $element . '?' . $element . "=" . $params;
@@ -417,9 +417,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->$single_element;
+		return $xmlString->$singleElement;
 	}
 
 	/**
@@ -447,9 +447,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->$element;
+		return $xmlString->$element;
 	}
 
 	/**
@@ -470,9 +470,9 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->way;
+		return $xmlString->way;
 	}
 
 	/**
@@ -500,25 +500,25 @@ class Elements extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->node;
+		return $xmlString->node;
 	}
 
 	/**
 	 * Method used by the DWG to hide old versions of elements containing data privacy or copyright infringements
 	 *
-	 * @param   string   $element       [node|way|relation]
-	 * @param   integer  $id            Element identifier
-	 * @param   integer  $version       Element version
-	 * @param   integer  $redaction_id  Redaction id
+	 * @param   string   $element      [node|way|relation]
+	 * @param   integer  $id           Element identifier
+	 * @param   integer  $version      Element version
+	 * @param   integer  $redactionId  Redaction id
 	 *
 	 * @return  array   The xml response
 	 *
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function redaction($element, $id, $version, $redaction_id)
+	public function redaction($element, $id, $version, $redactionId)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
@@ -533,7 +533,7 @@ class Elements extends OpenStreetMapObject
 		);
 
 		// Set the API base
-		$base = $element . '/' . $id . '/' . $version . '/redact?redaction=' . $redaction_id;
+		$base = $element . '/' . $id . '/' . $version . '/redact?redaction=' . $redactionId;
 
 		// Build the request path.
 		$path = $this->getOption('api.url') . $base;
@@ -541,8 +541,6 @@ class Elements extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'PUT', $parameters);
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 }

@@ -33,9 +33,7 @@ class Info extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'GET', array());
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 
 	/**
@@ -61,9 +59,7 @@ class Info extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'GET', array());
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 
 	/**
@@ -84,8 +80,6 @@ class Info extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'GET', array());
 
-		$xml_string = simplexml_load_string($response->body);
-
-		return $xml_string;
+		return simplexml_load_string($response->body);
 	}
 }

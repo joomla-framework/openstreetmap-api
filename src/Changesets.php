@@ -91,9 +91,9 @@ class Changesets extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->changeset;
+		return $xmlString->changeset;
 	}
 
 	/**
@@ -122,20 +122,20 @@ class Changesets extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Create a list of tags to update changeset
-		$tag_list = '';
+		$tagList = '';
 
 		if (!empty($tags))
 		{
 			foreach ($tags as $key => $value)
 			{
-				$tag_list .= '<tag k="' . $key . '" v="' . $value . '"/>';
+				$tagList .= '<tag k="' . $key . '" v="' . $value . '"/>';
 			}
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<changeset>'
-				. $tag_list .
+				. $tagList .
 				'</changeset>
 				</osm>';
 
@@ -144,9 +144,9 @@ class Changesets extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'PUT', $parameters, $xml, $header);
 
-		$xml_string = simplexml_load_string($response->body);
+		$xmlString = simplexml_load_string($response->body);
 
-		return $xml_string->changeset;
+		return $xmlString->changeset;
 	}
 
 	/**
@@ -197,9 +197,9 @@ class Changesets extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->create;
+		return $xmlString->create;
 	}
 
 	/**
@@ -228,20 +228,20 @@ class Changesets extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Create a list of tags to update changeset
-		$node_list = '';
+		$nodeList = '';
 
 		if (!empty($nodes))
 		{
 			foreach ($nodes as $node)
 			{
-				$node_list .= '<node lat="' . $node[0] . '" lon="' . $node[1] . '"/>';
+				$nodeList .= '<node lat="' . $node[0] . '" lon="' . $node[1] . '"/>';
 			}
 		}
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>
 				<osm version="0.6" generator="JoomlaOpenStreetMap">
 				<changeset>'
-				. $node_list .
+				. $nodeList .
 				'</changeset>
 			</osm>';
 
@@ -250,9 +250,9 @@ class Changesets extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'POST', $parameters, $xml, $header);
 
-		$xml_string = simplexml_load_string($response->body);
+		$xmlString = simplexml_load_string($response->body);
 
-		return $xml_string->changeset;
+		return $xmlString->changeset;
 	}
 
 	/**
@@ -273,9 +273,9 @@ class Changesets extends OpenStreetMapObject
 		$path = $this->getOption('api.url') . $base;
 
 		// Send the request.
-		$xml_string = $this->sendRequest($path);
+		$xmlString = $this->sendRequest($path);
 
-		return $xml_string->osm;
+		return $xmlString->osm;
 	}
 
 	/**
@@ -308,8 +308,8 @@ class Changesets extends OpenStreetMapObject
 		// Send the request.
 		$response = $this->oauth->oauthRequest($path, 'POST', $parameters, $xml, $header);
 
-		$xml_string = simplexml_load_string($response->body);
+		$xmlString = simplexml_load_string($response->body);
 
-		return $xml_string->diffResult;
+		return $xmlString->diffResult;
 	}
 }
