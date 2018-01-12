@@ -99,7 +99,7 @@ class OpenStreetMap
 		// Setup the default API url if not already set.
 		if (!isset($this->options['api.url']))
 		{
-			$this->options['api.url'] = 'http://api.openstreetmap.org/api/0.6/';
+			$this->options['api.url'] = 'https://api.openstreetmap.org/api/0.6/';
 		}
 	}
 
