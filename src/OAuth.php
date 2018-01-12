@@ -36,19 +36,19 @@ class OAuth extends Client
 		// Setup the access token URL if not already set.
 		if (!isset($options['accessTokenURL']))
 		{
-			$options['accessTokenURL'] = 'http://www.openstreetmap.org/oauth/access_token';
+			$options['accessTokenURL'] = 'https://www.openstreetmap.org/oauth/access_token';
 		}
 
 		// Setup the authorisation URL if not already set.
 		if (!isset($options['authoriseURL']))
 		{
-			$options['authoriseURL'] = 'http://www.openstreetmap.org/oauth/authorize';
+			$options['authoriseURL'] = 'https://www.openstreetmap.org/oauth/authorize';
 		}
 
 		// Setup the request token URL if not already set.
 		if (!isset($options['requestTokenURL']))
 		{
-			$options['requestTokenURL'] = 'http://www.openstreetmap.org/oauth/request_token';
+			$options['requestTokenURL'] = 'https://www.openstreetmap.org/oauth/request_token';
 		}
 
 		// Call the OAuth1\Client constructor to setup the object.
