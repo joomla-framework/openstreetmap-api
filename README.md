@@ -1,5 +1,9 @@
 ## The OpenStreetMap Package [![Build Status](https://travis-ci.org/joomla-framework/openstreetmap-api.png?branch=master)](https://travis-ci.org/joomla-framework/openstreetmap-api)
 
+### Deprecated
+
+The `joomla/openstreetmap` package is deprecated with no further updates planned.
+
 ### Using the OpenStreetMap Package
 The intention of the OpenStreetMap package is to provide an easy straightforward interface to work with OpenStreetMap. This is based on version 0.6 of the OpenStreetMap API. You can find more information about the OpenStreetMap API at [https://wiki.openstreetmap.org/wiki/API_v0.6](https://wiki.openstreetmap.org/wiki/API_v0.6).
 The OpenStreetMap package is built upon the `Joomla\OAuth1` package which provides OAuth 1.0 security infrastructure for the communications. The `Joomla\Http` package is also used as an easy way for the non-secure information exchanges.

@@ -13,7 +13,8 @@ use Joomla\Http\Http;
 /**
  * OpenStreetMap API object class for the Joomla Framework
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 abstract class OpenStreetMapObject
 {

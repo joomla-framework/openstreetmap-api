@@ -11,7 +11,8 @@ namespace Joomla\OpenStreetMap;
 /**
  * OpenStreetMap API Info class for the Joomla Framework
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 class Info extends OpenStreetMapObject
 {

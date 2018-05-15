@@ -17,7 +17,8 @@ use Joomla\OAuth1\Client;
 /**
  * Joomla Framework class for generating the OpenStreetMap API access token.
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 class OAuth extends Client
 {
