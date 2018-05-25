@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,8 @@ use Joomla\Http\Http;
 /**
  * Joomla Framework class for interacting with the OpenStreetMap API.
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 class OpenStreetMap
 {
@@ -99,7 +100,7 @@ class OpenStreetMap
 		// Setup the default API url if not already set.
 		if (!isset($this->options['api.url']))
 		{
-			$this->options['api.url'] = 'http://api.openstreetmap.org/api/0.6/';
+			$this->options['api.url'] = 'https://api.openstreetmap.org/api/0.6/';
 		}
 	}
 

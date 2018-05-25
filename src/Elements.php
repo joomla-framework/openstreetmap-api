@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -11,7 +11,8 @@ namespace Joomla\OpenStreetMap;
 /**
  * OpenStreetMap API Elements class for the Joomla Framework
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 class Elements extends OpenStreetMapObject
 {

@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework OpenStreetMap Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -17,7 +17,8 @@ use Joomla\OAuth1\Client;
 /**
  * Joomla Framework class for generating the OpenStreetMap API access token.
  *
- * @since  1.0
+ * @since       1.0
+ * @deprecated  The joomla/openstreetmap package is deprecated
  */
 class OAuth extends Client
 {
@@ -36,19 +37,19 @@ class OAuth extends Client
 		// Setup the access token URL if not already set.
 		if (!isset($options['accessTokenURL']))
 		{
-			$options['accessTokenURL'] = 'http://www.openstreetmap.org/oauth/access_token';
+			$options['accessTokenURL'] = 'https://www.openstreetmap.org/oauth/access_token';
 		}
 
 		// Setup the authorisation URL if not already set.
 		if (!isset($options['authoriseURL']))
 		{
-			$options['authoriseURL'] = 'http://www.openstreetmap.org/oauth/authorize';
+			$options['authoriseURL'] = 'https://www.openstreetmap.org/oauth/authorize';
 		}
 
 		// Setup the request token URL if not already set.
 		if (!isset($options['requestTokenURL']))
 		{
-			$options['requestTokenURL'] = 'http://www.openstreetmap.org/oauth/request_token';
+			$options['requestTokenURL'] = 'https://www.openstreetmap.org/oauth/request_token';
 		}
 
 		// Call the OAuth1\Client constructor to setup the object.

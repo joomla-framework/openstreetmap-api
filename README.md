@@ -1,7 +1,11 @@
 ## The OpenStreetMap Package [![Build Status](https://travis-ci.org/joomla-framework/openstreetmap-api.png?branch=master)](https://travis-ci.org/joomla-framework/openstreetmap-api)
 
+### Deprecated
+
+The `joomla/openstreetmap` package is deprecated with no further updates planned.
+
 ### Using the OpenStreetMap Package
-The intention of the OpenStreetMap package is to provide an easy straightforward interface to work with OpenStreetMap. This is based on version 0.6 of the OpenStreetMap API. You can find more information about the OpenStreetMap API at [http://wiki.openstreetmap.org/wiki/API_v0.6](http://wiki.openstreetmap.org/wiki/API_v0.6).
+The intention of the OpenStreetMap package is to provide an easy straightforward interface to work with OpenStreetMap. This is based on version 0.6 of the OpenStreetMap API. You can find more information about the OpenStreetMap API at [https://wiki.openstreetmap.org/wiki/API_v0.6](https://wiki.openstreetmap.org/wiki/API_v0.6).
 The OpenStreetMap package is built upon the `Joomla\OAuth1` package which provides OAuth 1.0 security infrastructure for the communications. The `Joomla\Http` package is also used as an easy way for the non-secure information exchanges.
 
 ### Initiating the OpenStreetMap class
@@ -38,7 +42,7 @@ $oauth->authenticate();
 $osm = new OpenStreetMap($oauth);
 ```
 
-To obtain a key and secret, you have to obtain an account at OpenStreetMap. Through your account you need to [register](http://www.openstreetmap.org/user/username/oauth_clients/new) your application along with a callback URL.
+To obtain a key and secret, you have to obtain an account at OpenStreetMap. Through your account you need to [register](https://www.openstreetmap.org/user/username/oauth_clients/new) your application along with a callback URL.
 
 ### Accessing OpenStreetMap API
 This API will do all types of interactions with OpenStreetMap API. This has been categorized in to 5 main sections: Changeset, Element, GPS, Info and User. All those inherit from `Joomla\OpenStreetMap\OpenStreetMapObject` and can be initiated through the magic `__get` method of the OpenStreetMap class. Methods contained in each type of object are closely related to the OpenStreetMap API calls.
@@ -89,7 +93,7 @@ print_r($result);
 ```
 
 ### More Information
-Following resources contain more information: [OpenStreetMap API](http://wiki.openstreetmap.org/wiki/API)
+Following resources contain more information: [OpenStreetMap API](https://wiki.openstreetmap.org/wiki/API)
 
 ### Installation via Composer
 Add `"joomla/openstreetmap": "2.0.*@dev"` to the require block in your composer.json and then run `composer install`.
