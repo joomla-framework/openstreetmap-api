@@ -64,11 +64,11 @@ class Gps extends OpenStreetMapObject
 	{
 		// Set parameters.
 		$parameters = array(
-			'file' => $file,
+			'file'        => $file,
 			'description' => $description,
-			'tags' => $tags,
-			'public' => $public,
-			'visibility' => $visibility
+			'tags'        => $tags,
+			'public'      => $public,
+			'visibility'  => $visibility,
 		);
 
 		// Set the API base

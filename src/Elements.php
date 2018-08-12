@@ -34,7 +34,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
@@ -86,7 +86,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
@@ -150,7 +150,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
@@ -257,7 +257,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
@@ -300,7 +300,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
@@ -371,7 +371,7 @@ class Elements extends OpenStreetMapObject
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function versionOfElement($element, $id ,$version)
+	public function versionOfElement($element, $id, $version)
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
@@ -530,7 +530,7 @@ class Elements extends OpenStreetMapObject
 
 		// Set parameters.
 		$parameters = array(
-			'oauth_token' => $token['key']
+			'oauth_token' => $token['key'],
 		);
 
 		// Set the API base
