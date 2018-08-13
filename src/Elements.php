@@ -177,11 +177,11 @@ class Elements extends OpenStreetMapObject
 		{
 			foreach ($members as $member)
 			{
-				if ($member['type'] == "node")
+				if ($member['type'] == 'node')
 				{
 					$memberList .= '<member type="' . $member['type'] . '" role="' . $member['role'] . '" ref="' . $member['ref'] . '"/>';
 				}
-				elseif ($member['type'] == "way")
+				elseif ($member['type'] == 'way')
 				{
 					$memberList .= '<member type="' . $member['type'] . '" ref="' . $member['ref'] . '"/>';
 				}
@@ -219,7 +219,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		// Set the API base
@@ -250,7 +250,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		$token = $this->oauth->getToken();
@@ -293,7 +293,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		$token = $this->oauth->getToken();
@@ -344,7 +344,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		// Set the API base
@@ -375,7 +375,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		// Set the API base
@@ -405,14 +405,14 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'nodes' && $element != 'ways' && $element != 'relations')
 		{
-			throw new \DomainException("Element should be nodes, ways or relations");
+			throw new \DomainException('Element should be nodes, ways or relations');
 		}
 
 		// Get singular word
-		$singleElement = substr($element, 0, strlen($element) - 1);
+		$singleElement = substr($element, 0, \strlen($element) - 1);
 
 		// Set the API base, $params is a string with comma seperated values
-		$base = $element . '?' . $element . "=" . $params;
+		$base = $element . '?' . $element . '=' . $params;
 
 		// Build the request path.
 		$path = $this->getOption('api.url') . $base;
@@ -438,7 +438,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		// Set the API base
@@ -491,7 +491,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a way or a relation");
+			throw new \DomainException('Element should be a way or a relation');
 		}
 
 		// Set the API base
@@ -523,7 +523,7 @@ class Elements extends OpenStreetMapObject
 	{
 		if ($element != 'node' && $element != 'way' && $element != 'relation')
 		{
-			throw new \DomainException("Element should be a node, a way or a relation");
+			throw new \DomainException('Element should be a node, a way or a relation');
 		}
 
 		$token = $this->oauth->getToken();
